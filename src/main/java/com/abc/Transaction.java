@@ -1,16 +1,15 @@
 package com.abc;
 
-import java.util.Calendar;
 import java.util.Date;
 
+import com.abc.DateProvider;
+
 public class Transaction {
-    public final double amount;
+	public final double amount;
+	public final Date transactionDate;
 
-    private Date transactionDate;
-
-    public Transaction(double amount) {
-        this.amount = amount;
-        this.transactionDate = DateProvider.getInstance().now();
-    }
-
+	public Transaction(double amount) {
+		this.amount = amount;
+		this.transactionDate = DateProvider.getInstance().now();
+	}
 }
