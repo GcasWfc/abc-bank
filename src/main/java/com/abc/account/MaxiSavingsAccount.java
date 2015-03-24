@@ -22,9 +22,8 @@ public class MaxiSavingsAccount extends Account {
     **interest rate of 5% assuming no withdrawals in the past 10 days otherwise 0.1%
      */
     public double interestEarned() {
-        double amount = currentBalance.getDoubleValue();
-
         /*
+        double amount = currentBalance.getDoubleValue();
         if (amount <= 1000)
             return (amount * 0.02)/365.0;
 
@@ -32,7 +31,8 @@ public class MaxiSavingsAccount extends Account {
             return (20 + (amount-1000) * 0.05)/365.0;
 
         return (70 + (amount-2000) * 0.1)/365.0;
-    */
+        */
+
         if(checkIfWithdrawalDoneInLastTenDays())
             return (currentBalance.getDoubleValue() * 0.001)/365.0;
 
