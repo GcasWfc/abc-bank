@@ -40,7 +40,7 @@ public class Bank {
 
     public String getFirstCustomer() {
         if(customers.isEmpty()) {
-            return "Error";
+            throw new RuntimeException("No customers in the Bank");
         } else {
             return customers.get(0).getName();
         }

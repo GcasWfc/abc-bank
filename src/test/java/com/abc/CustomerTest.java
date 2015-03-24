@@ -74,11 +74,13 @@ public class CustomerTest {
         oscar.openAccount(new CheckingAccount(456));
         assertEquals(2, oscar.getNumberOfAccounts());
     }
-    @Ignore
+
+    @Test
     public void testThreeAcounts() {
-        Customer oscar = new Customer("Oscar")
-                .openAccount(new SavingsAccount(123));
+        Customer oscar = new Customer("Oscar");
+        oscar.openAccount(new SavingsAccount(123));
         oscar.openAccount(new CheckingAccount(456));
+        oscar.openAccount(new SavingsAccount(666));
         assertEquals(3, oscar.getNumberOfAccounts());
     }
 }

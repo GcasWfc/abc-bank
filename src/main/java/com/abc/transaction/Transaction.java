@@ -14,6 +14,12 @@ public class Transaction {
         this.transactionDate = DateProvider.getInstance().today();
     }
 
+    public Transaction(TransactionType type, Money amount, Date tranDate) {
+        this.type = type;
+        this.amount = amount;
+        this.transactionDate = DateProvider.getInstance().getDateWithoutTime(tranDate);
+    }
+
     public Money getAmount() {
         return amount;
     }
