@@ -1,7 +1,6 @@
 package com.abc.transaction;
+import com.abc.DateProvider;
 import com.abc.Money;
-
-import java.util.Calendar;
 import java.util.Date;
 
 public class Transaction {
@@ -12,7 +11,7 @@ public class Transaction {
     public Transaction(TransactionType type, Money amount) {
         this.type = type;
         this.amount = amount;
-        this.transactionDate = Calendar.getInstance().getTime();
+        this.transactionDate = DateProvider.getInstance().today();
     }
 
     public Money getAmount() {
