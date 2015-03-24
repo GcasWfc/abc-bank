@@ -1,7 +1,5 @@
 package com.abc.account;
 
-import com.abc.Money;
-
 /**
  * Created by Vidushi Bhandari on 3/23/2015.
  */
@@ -11,6 +9,10 @@ public class SavingsAccount extends Account {
         super(accountId);
         this.accountType = AccountType.SAVINGS;
     }
+
+    /*
+    ** interest accrued daily - compounding is out of scope for this exercise
+    */
 
     public double interestEarned() {
         double amount = currentBalance.getDoubleValue();

@@ -10,6 +10,9 @@ public class CheckingAccount extends Account {
         this.accountType = AccountType.CHECKING;
     }
 
+    /*
+    ** interest accrued daily - compounding is out of scope for this exercise
+     */
     public double interestEarned() {
         return (currentBalance.getDoubleValue() * 0.001)/365.0;
     }

@@ -9,13 +9,13 @@ import java.util.List;
 
 public abstract class Account {
 
-    private List<Transaction> transactions;
+    private long accountId;
+
+    protected List<Transaction> transactions;
 
     protected AccountType accountType;
 
     protected Money currentBalance;
-
-    private long accountId;
 
     public Account(long accountId) {
         this.accountId = accountId;
