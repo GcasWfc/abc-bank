@@ -16,9 +16,9 @@ public class SavingsAccount extends Account {
         double amount = currentBalance.getDoubleValue();
 
         if (amount <= 1000)
-            return amount * 0.001;
+            return (amount * 0.001)/365.0;
         else
-            return 1 + (amount-1000) * 0.002;
+            return (1 + (amount-1000) * 0.002)/365.0;
     }
 
 }

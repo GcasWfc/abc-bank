@@ -11,7 +11,7 @@ public class CheckingAccount extends Account {
     }
 
     public double interestEarned() {
-        return currentBalance.getDoubleValue() * 0.001;
+        return (currentBalance.getDoubleValue() * 0.001)/365.0;
     }
 
 }
