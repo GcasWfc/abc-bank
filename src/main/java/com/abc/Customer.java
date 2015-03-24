@@ -1,17 +1,20 @@
 package com.abc;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.abc.account.Account;
+import java.util.Map;
+import java.util.TreeMap;
 
-import static java.lang.Math.abs;
+import static com.abc.Money.amountOf;
 
 public class Customer {
+
     private String name;
-    private List<Account> accounts;
+
+    private Map<Long, Account> accounts;
 
     public Customer(String name) {
         this.name = name;
-        this.accounts = new ArrayList<Account>();
+        this.accounts = new TreeMap<Long, Account>();
     }
 
     public String getName() {
@@ -19,8 +22,19 @@ public class Customer {
     }
 
     public Customer openAccount(Account account) {
-        accounts.add(account);
+        accounts.put(account.getAccountId(), account);
         return this;
+    }
+
+    public void transfer(Long fromAccountId, Long toAccountId, Money amount) {
+
+        if (fromAccountId.equals(toAccountId)) {
+            throw new RuntimeException("Invalid transaction - identical FROM and TO accounts");
+        }
+
+        Account source = accounts.get(fromAccountId);
+        Account target = accounts.get(toAccountId);
+        source.transferTo(target, amount);
     }
 
     public int getNumberOfAccounts() {
@@ -28,51 +42,23 @@ public class Customer {
     }
 
     public double totalInterestEarned() {
-        double total = 0;
-        for (Account a : accounts)
-            total += a.interestEarned();
-        return total;
+        double interestEarned = 0;
+        for (Account a : accounts.values())
+            interestEarned += a.interestEarned();
+        return interestEarned;
     }
 
     public String getStatement() {
-        String statement = null;
-        statement = "Statement for " + name + "\n";
-        double total = 0.0;
-        for (Account a : accounts) {
-            statement += "\n" + statementForAccount(a) + "\n";
-            total += a.sumTransactions();
+        StringBuilder statement = new StringBuilder("Statement for ");
+        statement.append(name).append("\n");
+        Money total = amountOf(0.0);
+        for (Account a : accounts.values()) {
+            statement.append("\n").append(a.getStatement()).append("\n");
+            total.add(a.getCurrentBalance());
         }
-        statement += "\nTotal In All Accounts " + toDollars(total);
-        return statement;
+        statement.append("\nTotal In All Accounts ").append(total.printValue());
+        return statement.toString();
     }
 
-    private String statementForAccount(Account a) {
-        String s = "";
 
-       //Translate to pretty account type
-        switch(a.getAccountType()){
-            case Account.CHECKING:
-                s += "Checking Account\n";
-                break;
-            case Account.SAVINGS:
-                s += "Savings Account\n";
-                break;
-            case Account.MAXI_SAVINGS:
-                s += "Maxi Savings Account\n";
-                break;
-        }
-
-        //Now total up all the transactions
-        double total = 0.0;
-        for (Transaction t : a.transactions) {
-            s += "  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + toDollars(t.amount) + "\n";
-            total += t.amount;
-        }
-        s += "Total " + toDollars(total);
-        return s;
-    }
-
-    private String toDollars(double d){
-        return String.format("$%,.2f", abs(d));
-    }
 }

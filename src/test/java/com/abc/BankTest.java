@@ -1,54 +1,110 @@
 package com.abc;
-
+import com.abc.account.*;
 import org.junit.Test;
 
+import java.util.Date;
+
+import static com.abc.Money.amountOf;
 import static org.junit.Assert.assertEquals;
 
 public class BankTest {
+
     private static final double DOUBLE_DELTA = 1e-15;
 
     @Test
     public void customerSummary() {
         Bank bank = new Bank();
         Customer john = new Customer("John");
-        john.openAccount(new Account(Account.CHECKING));
+        john.openAccount(new CheckingAccount(123));
         bank.addCustomer(john);
-
         assertEquals("Customer Summary\n - John (1 account)", bank.customerSummary());
     }
 
     @Test
-    public void checkingAccount() {
+    public void multipleCustomersSummary() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.CHECKING);
+        Customer john = new Customer("John");
+        john.openAccount(new CheckingAccount(123));
+        bank.addCustomer(john);
+
+        Customer galt = new Customer("Galt");
+        galt.openAccount(new CheckingAccount(456)).openAccount( new SavingsAccount(789));
+        bank.addCustomer(galt);
+
+        assertEquals("Customer Summary\n - John (1 account)\n" +
+                      " - Galt (2 accounts)"  , bank.customerSummary());
+    }
+
+    @Test
+    public void queryBankForFirstCustomer() {
+        Bank bank = new Bank();
+        Customer john = new Customer("John");
+        john.openAccount(new CheckingAccount(123));
+        bank.addCustomer(john);
+
+        Customer galt = new Customer("Galt");
+        galt.openAccount(new CheckingAccount(456)).openAccount( new SavingsAccount(789));
+        bank.addCustomer(galt);
+
+        assertEquals("John", bank.getFirstCustomer());
+
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void queryBankForFirstCustomerWhenNoneExist() {
+        Bank bank = new Bank();
+        bank.getFirstCustomer();
+    }
+
+    @Test
+    public void checkingAccountInterest() {
+        Bank bank = new Bank();
+        Account checkingAccount = new CheckingAccount(123);
         Customer bill = new Customer("Bill").openAccount(checkingAccount);
         bank.addCustomer(bill);
-
-        checkingAccount.deposit(100.0);
-
-        assertEquals(0.1, bank.totalInterestPaid(), DOUBLE_DELTA);
+        checkingAccount.deposit(amountOf(100.0));
+        assertEquals(2.7397260273972606E-4, bank.totalInterestPaid(), DOUBLE_DELTA);
     }
 
     @Test
-    public void savings_account() {
+    public void savingsAccountInterestForLessThanOneThousand() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.SAVINGS);
-        bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
-
-        checkingAccount.deposit(1500.0);
-
-        assertEquals(2.0, bank.totalInterestPaid(), DOUBLE_DELTA);
+        Account savingsAccount = new SavingsAccount(123);
+        bank.addCustomer(new Customer("Bill").openAccount(savingsAccount));
+        savingsAccount.deposit(amountOf(900.0));
+        assertEquals(0.002465753424657534, bank.totalInterestPaid(), DOUBLE_DELTA);
     }
 
     @Test
-    public void maxi_savings_account() {
+    public void savingsAccountInterest() {
         Bank bank = new Bank();
-        Account checkingAccount = new Account(Account.MAXI_SAVINGS);
-        bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
-
-        checkingAccount.deposit(3000.0);
-
-        assertEquals(170.0, bank.totalInterestPaid(), DOUBLE_DELTA);
+        Account savingsAccount = new SavingsAccount(123);
+        bank.addCustomer(new Customer("Bill").openAccount(savingsAccount));
+        savingsAccount.deposit(amountOf(1500.0));
+        assertEquals(0.005479452054794521, bank.totalInterestPaid(), DOUBLE_DELTA);
     }
 
+    @Test
+    public void maxiSavingsAccountInterest() {
+        Bank bank = new Bank();
+        Account maxiSavingsAccount = new MaxiSavingsAccount(123);
+        bank.addCustomer(new Customer("Bill").openAccount(maxiSavingsAccount));
+        maxiSavingsAccount.deposit(amountOf(3000.0));
+        assertEquals(0.410958904109589, bank.totalInterestPaid(), DOUBLE_DELTA);
+    }
+
+    @Test
+    public void maxiSavingsAccountInterestWhenWithDrawalinLastTenDays() {
+        Bank bank = new Bank();
+        Account maxiSavingsAccount = new MaxiSavingsAccount(123);
+        bank.addCustomer(new Customer("Bill").openAccount(maxiSavingsAccount));
+
+        long DAY_IN_MS = 1000 * 60 * 60 * 24;
+        Date today = DateProvider.getInstance().today();
+        Date tenDaysAgo = new Date(today.getTime() - 10*DAY_IN_MS);
+        Date fiveDaysAgo = new Date(today.getTime() - 5*DAY_IN_MS);
+        maxiSavingsAccount.deposit(amountOf(6000.0),tenDaysAgo);
+        maxiSavingsAccount.withdraw(amountOf(3000.0), fiveDaysAgo);
+        assertEquals(0.00821917808219178, bank.totalInterestPaid(), DOUBLE_DELTA);
+    }
 }

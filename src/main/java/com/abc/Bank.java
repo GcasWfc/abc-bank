@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bank {
+
     private List<Customer> customers;
 
     public Bank() {
@@ -15,14 +16,17 @@ public class Bank {
     }
 
     public String customerSummary() {
-        String summary = "Customer Summary";
-        for (Customer c : customers)
-            summary += "\n - " + c.getName() + " (" + format(c.getNumberOfAccounts(), "account") + ")";
-        return summary;
+        StringBuilder summary = new StringBuilder("Customer Summary");
+        for (Customer c : customers) {
+            summary.append("\n - ").append(c.getName());
+            summary.append(" (").append(format(c.getNumberOfAccounts(), "account"));
+            summary.append(")");
+        }
+        return summary.toString();
     }
 
     //Make sure correct plural of word is created based on the number passed in:
-    //If number passed in is 1 just return the word otherwise add an 's' at the end
+//If number passed in is 1 just return the word otherwise add an 's' at the end
     private String format(int number, String word) {
         return number + " " + (number == 1 ? word : word + "s");
     }
@@ -35,12 +39,10 @@ public class Bank {
     }
 
     public String getFirstCustomer() {
-        try {
-            customers = null;
+        if(customers.isEmpty()) {
+            throw new RuntimeException("No customers in the Bank");
+        } else {
             return customers.get(0).getName();
-        } catch (Exception e){
-            e.printStackTrace();
-            return "Error";
         }
     }
 }
