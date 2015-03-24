@@ -49,14 +49,15 @@ public class Customer {
     }
 
     public String getStatement() {
-        String statement = "Statement for " + name + "\n";
+        StringBuilder statement = new StringBuilder("Statement for ");
+        statement.append(name).append("\n");
         Money total = amountOf(0.0);
         for (Account a : accounts.values()) {
-            statement += "\n" + a.getStatement() + "\n";
+            statement.append("\n").append(a.getStatement()).append("\n");
             total.add(a.getCurrentBalance());
         }
-        statement += "\nTotal In All Accounts " + total.printValue();
-        return statement;
+        statement.append("\nTotal In All Accounts ").append(total.printValue());
+        return statement.toString();
     }
 
 

@@ -57,15 +57,14 @@ public abstract class Account {
     }
 
     public String getStatement() {
-        String s = "";
-        s +=  accountType + "\n";
+        StringBuilder s = new StringBuilder(accountType.toString()).append("\n");
 
         //Now total up all the transactions
         for (Transaction t : transactions) {
-            s += t.getType() + " " + t.getAmount().printValue() + "\n";
+            s.append(t.getType()).append(" ").append(t.getAmount().printValue()).append("\n");
         }
-        s += "Total " + currentBalance.printValue();
-        return s;
+        s.append("Total ").append(currentBalance.printValue());
+        return s.toString();
     }
 
     public abstract double interestEarned();

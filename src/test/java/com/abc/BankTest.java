@@ -25,24 +25,24 @@ public class BankTest {
         Customer bill = new Customer("Bill").openAccount(checkingAccount);
         bank.addCustomer(bill);
         checkingAccount.deposit(amountOf(100.0));
-        assertEquals(0.1, bank.totalInterestPaid(), DOUBLE_DELTA);
+        assertEquals(2.7397260273972606E-4, bank.totalInterestPaid(), DOUBLE_DELTA);
     }
 
     @Test
     public void savings_account() {
         Bank bank = new Bank();
-        Account checkingAccount = new SavingsAccount(123);
-        bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
-        checkingAccount.deposit(amountOf(1500.0));
-        assertEquals(2.0, bank.totalInterestPaid(), DOUBLE_DELTA);
+        Account savingsAccount = new SavingsAccount(123);
+        bank.addCustomer(new Customer("Bill").openAccount(savingsAccount));
+        savingsAccount.deposit(amountOf(1500.0));
+        assertEquals(0.005479452054794521, bank.totalInterestPaid(), DOUBLE_DELTA);
     }
 
     @Test
     public void maxi_savings_account() {
         Bank bank = new Bank();
-        Account checkingAccount = new MaxiSavingsAccount(123);
-        bank.addCustomer(new Customer("Bill").openAccount(checkingAccount));
-        checkingAccount.deposit(amountOf(3000.0));
-        assertEquals(170.0, bank.totalInterestPaid(), DOUBLE_DELTA);
+        Account maxiSavingsAccount = new MaxiSavingsAccount(123);
+        bank.addCustomer(new Customer("Bill").openAccount(maxiSavingsAccount));
+        maxiSavingsAccount.deposit(amountOf(3000.0));
+        assertEquals(0.410958904109589, bank.totalInterestPaid(), DOUBLE_DELTA);
     }
 }
