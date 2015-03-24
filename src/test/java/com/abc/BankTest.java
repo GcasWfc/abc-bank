@@ -17,7 +17,6 @@ public class BankTest {
         Customer john = new Customer("John");
         john.openAccount(new CheckingAccount(123));
         bank.addCustomer(john);
-        System.out.print(bank.customerSummary());
         assertEquals("Customer Summary\n - John (1 account)", bank.customerSummary());
     }
 
@@ -32,9 +31,23 @@ public class BankTest {
         galt.openAccount(new CheckingAccount(456)).openAccount( new SavingsAccount(789));
         bank.addCustomer(galt);
 
-        System.out.print(bank.customerSummary());
         assertEquals("Customer Summary\n - John (1 account)\n" +
                       " - Galt (2 accounts)"  , bank.customerSummary());
+    }
+
+    @Test
+    public void queryBankForFirstCustomer() {
+        Bank bank = new Bank();
+        Customer john = new Customer("John");
+        john.openAccount(new CheckingAccount(123));
+        bank.addCustomer(john);
+
+        Customer galt = new Customer("Galt");
+        galt.openAccount(new CheckingAccount(456)).openAccount( new SavingsAccount(789));
+        bank.addCustomer(galt);
+
+        assertEquals("John", bank.getFirstCustomer());
+
     }
 
     @Test(expected = RuntimeException.class)
@@ -44,7 +57,7 @@ public class BankTest {
     }
 
     @Test
-    public void checkingAccountIntrest() {
+    public void checkingAccountInterest() {
         Bank bank = new Bank();
         Account checkingAccount = new CheckingAccount(123);
         Customer bill = new Customer("Bill").openAccount(checkingAccount);
@@ -54,7 +67,16 @@ public class BankTest {
     }
 
     @Test
-    public void savingsAccountIntrest() {
+    public void savingsAccountInterestForLessThanOneThousand() {
+        Bank bank = new Bank();
+        Account savingsAccount = new SavingsAccount(123);
+        bank.addCustomer(new Customer("Bill").openAccount(savingsAccount));
+        savingsAccount.deposit(amountOf(900.0));
+        assertEquals(0.002465753424657534, bank.totalInterestPaid(), DOUBLE_DELTA);
+    }
+
+    @Test
+    public void savingsAccountInterest() {
         Bank bank = new Bank();
         Account savingsAccount = new SavingsAccount(123);
         bank.addCustomer(new Customer("Bill").openAccount(savingsAccount));

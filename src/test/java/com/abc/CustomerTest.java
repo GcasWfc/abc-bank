@@ -19,7 +19,6 @@ public class CustomerTest {
         savingsAccount.deposit(amountOf(4000.0));
         savingsAccount.withdraw(amountOf(200.0));
         String stmt = henry.getStatement();
-        System.out.print(stmt);
         assertEquals("Statement for Henry\n" +
                 "\n" +
                 "Checking Account\n" +
@@ -45,7 +44,6 @@ public class CustomerTest {
         savingsAccount.withdraw(amountOf(200.0));
         henry.transfer(456L,123L,amountOf(100.0));
         String stmt = henry.getStatement();
-        System.out.print(stmt);
         assertEquals("Statement for Henry\n" +
                 "\n" +
                 "Checking Account\n" +
@@ -62,7 +60,15 @@ public class CustomerTest {
                 "Total In All Accounts $3,900.00", henry.getStatement());
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
+    public void testTransferToSameAccount(){
+        Account checkingAccount = new CheckingAccount(123L);
+        Customer henry = new Customer("Henry").openAccount(checkingAccount);
+        checkingAccount.deposit(amountOf(100.0));
+        henry.transfer(123L, 123L, amountOf(100.0));
+    }
+
+        @Test
     public void testOneAccount(){
         Customer oscar = new Customer("Oscar").openAccount(new SavingsAccount(123));
         assertEquals(1, oscar.getNumberOfAccounts());

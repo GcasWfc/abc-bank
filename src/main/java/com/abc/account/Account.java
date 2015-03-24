@@ -1,6 +1,5 @@
 package com.abc.account;
 
-import com.abc.DateProvider;
 import com.abc.Money;
 import com.abc.transaction.Transaction;
 import com.abc.transaction.TransactionType;
