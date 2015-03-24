@@ -2,7 +2,6 @@ package com.abc;
 import com.abc.account.Account;
 import com.abc.account.CheckingAccount;
 import com.abc.account.SavingsAccount;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.abc.Money.amountOf;
@@ -68,11 +67,12 @@ public class CustomerTest {
         henry.transfer(123L, 123L, amountOf(100.0));
     }
 
-        @Test
+    @Test
     public void testOneAccount(){
         Customer oscar = new Customer("Oscar").openAccount(new SavingsAccount(123));
         assertEquals(1, oscar.getNumberOfAccounts());
     }
+
     @Test
     public void testTwoAccount(){
         Customer oscar = new Customer("Oscar")
