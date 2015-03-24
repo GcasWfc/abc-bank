@@ -1,10 +1,12 @@
 package com.abc.account;
 
+import com.abc.DateProvider;
 import com.abc.Money;
 import com.abc.transaction.Transaction;
 import com.abc.transaction.TransactionType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public abstract class Account {
@@ -36,9 +38,19 @@ public abstract class Account {
         transactions.add(new Transaction(TransactionType.DEPOSIT, amount));
     }
 
+    public void deposit(Money amount, Date tranDate) {
+        currentBalance.add(amount);
+        transactions.add(new Transaction(TransactionType.DEPOSIT, amount, tranDate));
+    }
+
     public void withdraw(Money amount) {
         currentBalance.deduct(amount);
         transactions.add(new Transaction(TransactionType.WITHDRAWAL, amount));
+    }
+
+    public void withdraw(Money amount, Date tranDate) {
+        currentBalance.deduct(amount);
+        transactions.add(new Transaction(TransactionType.WITHDRAWAL, amount, tranDate));
     }
 
     public void transfer(Money amount) {
