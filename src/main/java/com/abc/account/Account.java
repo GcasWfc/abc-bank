@@ -37,6 +37,7 @@ public abstract class Account {
         transactions.add(new Transaction(TransactionType.DEPOSIT, amount));
     }
 
+    //added for testcase - ideally should mock the current date in tests
     public void deposit(Money amount, Date tranDate) {
         currentBalance.add(amount);
         transactions.add(new Transaction(TransactionType.DEPOSIT, amount, tranDate));
@@ -47,6 +48,7 @@ public abstract class Account {
         transactions.add(new Transaction(TransactionType.WITHDRAWAL, amount));
     }
 
+    //added for testcase - ideally should mock the date in tests
     public void withdraw(Money amount, Date tranDate) {
         currentBalance.deduct(amount);
         transactions.add(new Transaction(TransactionType.WITHDRAWAL, amount, tranDate));
