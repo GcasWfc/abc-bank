@@ -67,20 +67,20 @@ public void withdraw(double amount) {
         switch (accountType){
             case SAVINGS:
                 if(runningAmount <= 1000 ){
-                    interest += runningAmount*days*0.001/365;
+                    interest += runningAmount* (Math.pow((1+0.001), days/365) - 1 );
                 }else{
-                    interest += days/365 + (runningAmount - 1000)*days*0.002/365;
+                    interest += days/365 + (runningAmount - 1000)* (Math.pow((1+0.002), days/365) - 1 ) ;
                 }
                 break;
             case MAXI_SAVINGS:
                 if(lastWithdraw <= 10){
-                    interest += runningAmount *days* 0.05/365;
+                    interest += runningAmount * (Math.pow((1+0.05), days/365) - 1 ) ;
                 }else{
-                    interest += runningAmount *days* 0.001/365;
+                    interest += runningAmount * (Math.pow((1+0.001), days/365) - 1 )  ;
                 }
                 break;
             default:
-                interest += runningAmount * days * 0.001/365;
+                interest += runningAmount * (Math.pow((1+0.001), days/365) - 1 ) ;
                 break;
         }
         return interest;

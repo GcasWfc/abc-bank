@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
  * Created by devesh on 3/24/15.
  */
 public class AccountTest {
-    private static final double DOUBLE_DELTA = 1e-15;
+    private static final double DOUBLE_DELTA = 1e-4;
     private Date asOfDate;
 
     @Before
@@ -61,5 +61,16 @@ public class AccountTest {
         Account checkingAccount = new Account(Account.CHECKING);
         checkingAccount.deposit(100);
         assertEquals(0.1, checkingAccount.interestEarned(asOfDate), DOUBLE_DELTA);
+    }
+
+    @Test
+    public void maxi_savings_account() {
+
+        Account maxSavingsAccount = new Account(Account.MAXI_SAVINGS);
+
+
+        maxSavingsAccount.deposit(3000.0);
+
+        assertEquals(150.0, maxSavingsAccount.interestEarned(asOfDate), DOUBLE_DELTA);
     }
 }
