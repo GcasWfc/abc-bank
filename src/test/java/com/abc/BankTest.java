@@ -1,11 +1,25 @@
 package com.abc;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
 
 public class BankTest {
     private static final double DOUBLE_DELTA = 1e-15;
+
+    private Date asOfDate;
+
+    @Before
+    public void setUp() throws Exception{
+        DateProvider dateProvider = DateProvider.getInstance();
+        asOfDate = dateProvider.addDays(dateProvider.now(), 365);
+    }
 
     @Test
     public void customerSummary() {
@@ -26,7 +40,7 @@ public class BankTest {
 
         checkingAccount.deposit(100.0);
 
-        assertEquals(0.1, bank.totalInterestPaid(), DOUBLE_DELTA);
+        assertEquals(0.1, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
     }
 
     @Test
@@ -37,7 +51,8 @@ public class BankTest {
 
         checkingAccount.deposit(1500.0);
 
-        assertEquals(2.0, bank.totalInterestPaid(), DOUBLE_DELTA);
+
+        assertEquals(2.0, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
     }
 
     @Test
@@ -48,7 +63,7 @@ public class BankTest {
 
         checkingAccount.deposit(3000.0);
 
-        assertEquals(170.0, bank.totalInterestPaid(), DOUBLE_DELTA);
+        assertEquals(170.0, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
     }
 
 }
