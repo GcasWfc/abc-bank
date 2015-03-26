@@ -23,14 +23,14 @@ public class AccountTest {
 
     @Test
     public void testDepositToAccount() throws Exception{
-        Account checkingAccount = new Account(Account.CHECKING);
+        Account checkingAccount = new Account(Account.CHECKING, InterestRateFactory.getInterestRateCalculator(Account.CHECKING));
         checkingAccount.deposit(300.5);
         assertEquals(300.5, checkingAccount.sumTransactions(), DOUBLE_DELTA);
     }
 
     @Test
     public void testWithdrawFromAccount() throws Exception{
-        Account checkingAccount = new Account(Account.CHECKING);
+        Account checkingAccount = new Account(Account.CHECKING, InterestRateFactory.getInterestRateCalculator(Account.CHECKING));
         checkingAccount.deposit(300.5);
         checkingAccount.withdraw(300.5);
         assertEquals(0, checkingAccount.sumTransactions(), DOUBLE_DELTA);
@@ -38,27 +38,27 @@ public class AccountTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testFailedDepositToAccount() throws Exception{
-        Account checkingAccount = new Account(Account.CHECKING);
+        Account checkingAccount = new Account(Account.CHECKING, InterestRateFactory.getInterestRateCalculator(Account.CHECKING));
         checkingAccount.deposit(-200);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testFailedWithdrawFromAccount() throws Exception{
-        Account checkingAccount = new Account(Account.CHECKING);
+        Account checkingAccount = new Account(Account.CHECKING,InterestRateFactory.getInterestRateCalculator(Account.CHECKING));
         checkingAccount.deposit(300.5);
         checkingAccount.withdraw(-200);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testFailedOverDraftFromAccount() throws Exception{
-        Account checkingAccount = new Account(Account.CHECKING);
+        Account checkingAccount = new Account(Account.CHECKING,InterestRateFactory.getInterestRateCalculator(Account.CHECKING));
         checkingAccount.deposit(300.5);
         checkingAccount.withdraw(400);
     }
 
     @Test
     public void testCheckingInterestRate() throws Exception{
-        Account checkingAccount = new Account(Account.CHECKING);
+        Account checkingAccount = new Account(Account.CHECKING,InterestRateFactory.getInterestRateCalculator(Account.CHECKING));
         checkingAccount.deposit(100);
         assertEquals(0.1, checkingAccount.interestEarned(asOfDate), DOUBLE_DELTA);
     }
@@ -66,7 +66,7 @@ public class AccountTest {
     @Test
     public void maxi_savings_account() {
 
-        Account maxSavingsAccount = new Account(Account.MAXI_SAVINGS);
+        Account maxSavingsAccount = new Account(Account.MAXI_SAVINGS,InterestRateFactory.getInterestRateCalculator(Account.MAXI_SAVINGS));
 
 
         maxSavingsAccount.deposit(3000.0);
