@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 import static org.junit.Assert.assertEquals;
 
 public class BankTest {
-    private static final double DOUBLE_DELTA = 1e-5;
+    private static final double DOUBLE_DELTA = 1e-15;
 
     private Date asOfDate;
 
@@ -40,7 +40,7 @@ public class BankTest {
 
         checkingAccount.deposit(100.0);
 
-        assertEquals(0.1, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
+        assertEquals(0.10004987954705946, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class BankTest {
         checkingAccount.deposit(1500.0);
 
 
-        assertEquals(2.0, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
+        assertEquals(2.0014967172630183, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class BankTest {
 
         checkingAccount.deposit(3000.0);
 
-        assertEquals(150.0, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
+        assertEquals(153.802489402342, bank.totalInterestPaid(asOfDate), DOUBLE_DELTA);
     }
 
 }

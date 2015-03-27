@@ -31,7 +31,7 @@ public class InterestRateCalculatorTest {
         txnList.add(transaction1);
         txnList.add(transaction2);
         double interest = interestRateCalculator.getInterestEarned(txnList, asOfDate);
-        assertEquals(1.0999999999998789, interest, DOUBLE_DELTA);
+        assertEquals(1.100548675017654, interest, DOUBLE_DELTA);
     }
     @Test
     public void testSavingsInterestRate() throws Exception{
@@ -42,7 +42,7 @@ public class InterestRateCalculatorTest {
         txnList.add(transaction1);
         txnList.add(transaction2);
         double interest = interestRateCalculator.getInterestEarned(txnList, asOfDate);
-        assertEquals(1.19999999999989, interest, DOUBLE_DELTA);
+        assertEquals(1.2006983798290793, interest, DOUBLE_DELTA);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class InterestRateCalculatorTest {
         txnList.add(transaction1);
         txnList.add(transaction2);
         double interest = interestRateCalculator.getInterestEarned(txnList, asOfDate);
-        assertEquals(55.00000000000005, interest, DOUBLE_DELTA);
+        assertEquals(56.39424611419206, interest, DOUBLE_DELTA);
     }
 
     @Test
@@ -68,6 +68,6 @@ public class InterestRateCalculatorTest {
         txnList.add(transaction2);
         txnList.add(transaction3);
         double interest = interestRateCalculator.getInterestEarned(txnList, asOfDate);
-        assertEquals(5.000000000000004, interest, DOUBLE_DELTA);
+        assertEquals(5.126749646744733, interest, DOUBLE_DELTA);
     }
 }
