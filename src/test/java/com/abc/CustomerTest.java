@@ -3,6 +3,7 @@ package com.abc;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class CustomerTest {
@@ -53,5 +54,49 @@ public class CustomerTest {
                 .openAccount(new Account(Account.SAVINGS));
         oscar.openAccount(new Account(Account.CHECKING));
         assertEquals(3, oscar.getNumberOfAccounts());
+    }
+    
+    @Test
+    public void testTransferSuccessCase()
+    {
+    	Account checkingAccount = new Account(Account.CHECKING);
+    	Account savingAccount = new Account(Account.SAVINGS);
+    	
+    	Customer oscar = new Customer("Oscar")
+        	.openAccount(savingAccount);
+    	oscar.openAccount(checkingAccount);
+    	
+    	checkingAccount.deposit(10000);
+    	oscar.transfer(checkingAccount.getAccountNumber(), savingAccount.getAccountNumber(), 300);
+    	
+    	assertTrue(9700 == checkingAccount.sumTransactions());
+    	assertTrue(300 == savingAccount.sumTransactions());
+    }
+    @Test (expected = IllegalArgumentException.class)
+    public void testTransferAccountNotFound()
+    {
+    	Account checkingAccount = new Account(Account.CHECKING);
+    	Account savingAccount = new Account(Account.SAVINGS);
+    	
+    	Customer oscar = new Customer("Oscar")
+        	.openAccount(savingAccount);
+    	oscar.openAccount(checkingAccount);
+    	
+    	checkingAccount.deposit(10000);
+    	oscar.transfer(123, savingAccount.getAccountNumber(), 300);
+    }
+    
+    @Test (expected = IllegalArgumentException.class)
+    public void testTransferInvalidAmount()
+    {
+    	Account checkingAccount = new Account(Account.CHECKING);
+    	Account savingAccount = new Account(Account.SAVINGS);
+    	
+    	Customer oscar = new Customer("Oscar")
+        	.openAccount(savingAccount);
+    	oscar.openAccount(checkingAccount);
+    	
+    	checkingAccount.deposit(10000);
+    	oscar.transfer(checkingAccount.getAccountNumber(), savingAccount.getAccountNumber(), 10001);
     }
 }

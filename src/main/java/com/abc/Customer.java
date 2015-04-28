@@ -64,7 +64,8 @@ public class Customer {
 
         //Now total up all the transactions
         double total = 0.0;
-        for (Transaction t : a.transactions) {
+        ArrayList<Transaction> transactionsCopied = a.getTransactions();
+        for (Transaction t : transactionsCopied) {
             s += "  " + (t.amount < 0 ? "withdrawal" : "deposit") + " " + toDollars(t.amount) + "\n";
             total += t.amount;
         }
@@ -72,6 +73,33 @@ public class Customer {
         return s;
     }
 
+    public void transfer(int fromAccountNumber, int toAccountNumber, double amount)
+    {
+    	Account accountFrom = null;
+    	Account accountTo = null;
+    	for (Account account:accounts)
+    	{
+    		if (accountFrom != null && accountTo != null)
+    			break;
+    		else if (account.getAccountNumber() == fromAccountNumber)
+    			accountFrom = account;
+    		else if (account.getAccountNumber() == toAccountNumber)
+    			accountTo = account;
+    	}
+    	if (accountFrom == null || accountFrom == null)
+    		throw new IllegalArgumentException("account number not found");
+    	
+    	double totalBalanceFrom = accountFrom.sumTransactions();
+    	if (amount > totalBalanceFrom)
+    		throw new IllegalArgumentException("amount must be less than balance in from account");
+    	
+    	synchronized(this)
+    	{
+    		accountFrom.withdraw(amount);
+    		accountTo.deposit(amount);
+    	}
+    }
+    
     private String toDollars(double d){
         return String.format("$%,.2f", abs(d));
     }

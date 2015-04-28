@@ -16,7 +16,9 @@ public class Bank {
 
     public String customerSummary() {
         String summary = "Customer Summary";
-        for (Customer c : customers)
+        //prevent fast fail iterator
+        ArrayList<Customer> copyCustomers = new ArrayList<Customer>(customers);
+        for (Customer c : copyCustomers)
             summary += "\n - " + c.getName() + " (" + format(c.getNumberOfAccounts(), "account") + ")";
         return summary;
     }
@@ -29,7 +31,9 @@ public class Bank {
 
     public double totalInterestPaid() {
         double total = 0;
-        for(Customer c: customers)
+        //prevent fast fail iterator
+        ArrayList<Customer> copyCustomers = new ArrayList<Customer>(customers);
+        for(Customer c: copyCustomers)
             total += c.totalInterestEarned();
         return total;
     }
